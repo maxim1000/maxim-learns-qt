@@ -3,12 +3,15 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    Points({QPoint(10,10),QPoint(20,30)})
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->graphicsView->setScene(&Scene);
-    UpdateScene();
+    Scene.SetLeftButtonUpHandler([&](const QPointF &point)
+    {
+        Points.push_back(point);
+        UpdateScene();
+    });
 }
 
 MainWindow::~MainWindow()

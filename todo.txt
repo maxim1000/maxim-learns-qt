@@ -1,5 +1,5 @@
 add points by clicking
-    add a point on click
+    deal with shifting scene
 connect points by lines
 add "complete" button - closes the polygon
 show area in the status bar

@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QGraphicsScene>
+#include "tscenewithmousehandlers.h"
 #include <QMainWindow>
-#include <QPoint>
+#include <QPointF>
 #include <vector>
 
 namespace Ui {
@@ -19,11 +19,12 @@ public:
     ~MainWindow();
 
 private:
+    class TMouseHandler;
     static const int VertexSize=10;
 
     Ui::MainWindow *ui;
-    std::vector<QPoint> Points;
-    QGraphicsScene Scene;
+    std::vector<QPointF> Points;
+    TSceneWithMouseHandlers Scene;
     void UpdateScene();
 };
 
