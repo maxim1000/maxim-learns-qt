@@ -30,7 +30,6 @@ SOURCES += \
 
 HEADERS += \
     MainWindow.h \
-    PolygonWidget.h \
     DelegatingWidget.h
 
 FORMS +=
