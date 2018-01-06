@@ -1,5 +1,4 @@
 add points by clicking
-    add a white area for placing points
     draw some predefined point set
     add a point on click
 connect points by lines
