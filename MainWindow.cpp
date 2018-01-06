@@ -15,6 +15,9 @@ void MainWindow::drawPolygon(QPainter &painter)
     QBrush brush(QColor(255,255,255));
     painter.setBrush(brush);
     painter.drawRect(designArea.rect());
+    if(polygon.size()>1)
+        for(auto point=polygon.begin();point+1!=polygon.end();++point)
+            painter.drawLine(*point,*(point+1));
     for(const auto &point:polygon)
         painter.drawEllipse(point,vertexSize,vertexSize);
 }
