@@ -1,4 +1,4 @@
-#include "tscenewithmousehandlers.h"
+#include "TSceneWithMouseHandlers.h"
 #include <QGraphicsSceneMouseEvent>
 void TSceneWithMouseHandlers::SetLeftButtonUpHandler(TLeftButtonUpHandler handler)
 {

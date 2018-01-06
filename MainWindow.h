@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "tscenewithmousehandlers.h"
+#include "TSceneWithMouseHandlers.h"
 #include <QMainWindow>
 #include <QPointF>
 #include <vector>
