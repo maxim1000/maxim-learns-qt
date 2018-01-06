@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include <QMouseEvent>
 #include <QPainter>
+#include <QBrush>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     designArea(this)
@@ -11,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 void MainWindow::drawPolygon(QPainter &painter)
 {
+    QBrush brush(QColor(255,255,255));
+    painter.setBrush(brush);
+    painter.drawRect(designArea.rect());
     for(const auto &point:polygon)
         painter.drawEllipse(point,vertexSize,vertexSize);
 }

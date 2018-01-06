@@ -1,5 +1,4 @@
 add points by clicking
-    make design area background white
 connect points by lines
 add "complete" button - closes the polygon
 show area in the status bar
