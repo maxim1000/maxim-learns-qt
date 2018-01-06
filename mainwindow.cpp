@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     Points({QPoint(10,10),QPoint(20,30)})
 {
     ui->setupUi(this);
+    ui->graphicsView->setScene(&Scene);
     UpdateScene();
 }
 

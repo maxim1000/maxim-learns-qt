@@ -1,5 +1,4 @@
 add points by clicking
-    draw some predefined point set
     add a point on click
 connect points by lines
 add "complete" button - closes the polygon
