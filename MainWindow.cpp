@@ -4,11 +4,15 @@
 #include <QBrush>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    designArea(this)
+    centralWidget(this),
+    windowLayout(&centralWidget),
+    designArea(&centralWidget)
 {
     designArea.paintFunction=[&](QPainter &painter){drawPolygon(painter);};
     designArea.mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
-    setCentralWidget(&designArea);
+    windowLayout.addWidget(&designArea,1);
+    centralWidget.setLayout(&windowLayout);
+    setCentralWidget(&centralWidget);
 }
 void MainWindow::drawPolygon(QPainter &painter)
 {

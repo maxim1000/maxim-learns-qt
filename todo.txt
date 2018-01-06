@@ -1,5 +1,4 @@
 add "complete" button - closes the polygon
-    add a grouping widget which will contain the design area and the button
     add the button
     close the polygon when the button is pressed
 show area in the status bar
