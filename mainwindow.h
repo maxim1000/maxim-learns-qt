@@ -1,7 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QGraphicsScene>
 #include <QMainWindow>
+#include <QPoint>
+#include <vector>
 
 namespace Ui {
 class MainWindow;
@@ -16,7 +19,12 @@ public:
     ~MainWindow();
 
 private:
+    static const int VertexSize=10;
+
     Ui::MainWindow *ui;
+    std::vector<QPoint> Points;
+    QGraphicsScene Scene;
+    void UpdateScene();
 };
 
 #endif // MAINWINDOW_H
