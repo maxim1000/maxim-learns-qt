@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     designArea.paintFunction=[&](QPainter &painter){drawPolygon(painter);};
     designArea.mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
+    setCentralWidget(&designArea);
 }
 void MainWindow::drawPolygon(QPainter &painter)
 {
