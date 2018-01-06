@@ -25,12 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    TSceneWithMouseHandlers.cpp \
-    MainWindow.cpp
+    MainWindow.cpp \
+    SceneWithMouseHandlers.cpp
 
 HEADERS += \
-    TSceneWithMouseHandlers.h \
-    MainWindow.h
+    MainWindow.h \
+    SceneWithMouseHandlers.h
 
 FORMS += \
         mainwindow.ui

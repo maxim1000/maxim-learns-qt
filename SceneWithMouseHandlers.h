@@ -5,13 +5,13 @@
 #include <QPointF>
 #include <functional>
 
-class TSceneWithMouseHandlers : public QGraphicsScene
+class SceneWithMouseHandlers : public QGraphicsScene
 {
 public:
-    using TLeftButtonUpHandler=std::function<void(const QPointF&)>;
-    void SetLeftButtonUpHandler(TLeftButtonUpHandler);
+    using LeftButtonUpHandler=std::function<void(const QPointF&)>;
+    void SetLeftButtonUpHandler(LeftButtonUpHandler);
 private:
-    TLeftButtonUpHandler LeftButtonUpHandler;
+    LeftButtonUpHandler leftButtonUpHandler;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override;
 };
 
