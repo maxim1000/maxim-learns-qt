@@ -26,11 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     MainWindow.cpp \
-    SceneWithMouseHandlers.cpp
+    DelegatingWidget.cpp
 
 HEADERS += \
     MainWindow.h \
-    SceneWithMouseHandlers.h
+    PolygonWidget.h \
+    DelegatingWidget.h
 
-FORMS += \
-        mainwindow.ui
+FORMS +=

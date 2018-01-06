@@ -1,25 +1,23 @@
 #include "MainWindow.h"
-#include "ui_mainwindow.h"
-
+#include <QMouseEvent>
+#include <QPainter>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    designArea(this)
 {
-    ui->setupUi(this);
-    ui->graphicsView->setScene(&scene);
-    scene.SetLeftButtonUpHandler([&](const QPointF &point)
+    designArea.paintFunction=[&](QPainter &painter){drawPolygon(painter);};
+    designArea.mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
+}
+void MainWindow::drawPolygon(QPainter &painter)
+{
+    for(const auto &point:polygon)
+        painter.drawEllipse(point,vertexSize,vertexSize);
+}
+void MainWindow::handleMouseRelease(QMouseEvent &event)
+{
+    if(event.button()==Qt::LeftButton)
     {
-        points.push_back(point);
-        UpdateScene();
-    });
-}
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-void MainWindow::UpdateScene()
-{
-    scene.clear();
-    for(const auto &point:points)
-        scene.addEllipse(point.x()-vertexSize/2,point.y()-vertexSize/2,vertexSize,vertexSize);
+        polygon.push_back(event.pos());
+        designArea.update();
+    }
 }

@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "SceneWithMouseHandlers.h"
+#include "DelegatingWidget.h"
 #include <QMainWindow>
-#include <QPointF>
+#include <QPoint>
 #include <vector>
 
 namespace Ui {
@@ -16,16 +16,13 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
 
 private:
-    class TMouseHandler;
     static const int vertexSize=10;
-
-    Ui::MainWindow *ui;
-    std::vector<QPointF> points;
-    SceneWithMouseHandlers scene;
-    void UpdateScene();
+    DelegatingWidget designArea;
+    std::vector<QPoint> polygon;
+    void drawPolygon(QPainter&);
+    void handleMouseRelease(QMouseEvent&);
 };
 
 #endif // MAINWINDOW_H
