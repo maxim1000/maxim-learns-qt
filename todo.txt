@@ -1,4 +1,7 @@
 add "complete" button - closes the polygon
+    add a grouping widget which will contain the design area and the button
+    add the button
+    close the polygon when the button is pressed
 show area in the status bar
 make "complete" button active only when there are no self-intersections
 show convexness in the status bar
