@@ -1,4 +1,3 @@
-add points by clicking
 connect points by lines
 add "complete" button - closes the polygon
 show area in the status bar
