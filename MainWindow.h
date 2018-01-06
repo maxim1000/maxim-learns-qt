@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include "DelegatingWidget.h"
-#include <QHBoxLayout>
 #include <QMainWindow>
 #include <QPoint>
 #include <vector>
@@ -20,10 +19,8 @@ public:
 
 private:
     static const int vertexSize=10;
-    QWidget centralWidget;
-    QHBoxLayout windowLayout;
-    DelegatingWidget designArea;
     std::vector<QPoint> polygon;
+    DelegatingWidget *designArea;
     void drawPolygon(QPainter&);
     void handleMouseRelease(QMouseEvent&);
 };
