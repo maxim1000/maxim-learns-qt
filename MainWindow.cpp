@@ -55,8 +55,10 @@ QWidget *MainWindow::createDesignArea()
         }
         if(!completed && polygon.size()>=1 && candidateCordinates!=QPoint(-1,-1))
         {
+            auto candidatePolygon=polygon;
+            candidatePolygon.push_back(candidateCordinates);
             QPen pen;
-            pen.setColor(Qt::green);
+            pen.setColor(HasPolygonSelfIntersections(candidatePolygon)?Qt::red:Qt::green);
             pen.setStyle(Qt::DashLine);
             painter.setPen(pen);
             painter.drawLine(polygon.front(),candidateCordinates);
