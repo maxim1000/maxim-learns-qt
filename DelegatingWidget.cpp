@@ -16,3 +16,13 @@ void DelegatingWidget::mouseReleaseEvent(QMouseEvent *event)
     if(mouseReleaseHandler)
         mouseReleaseHandler(*event);
 }
+void DelegatingWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if(mouseMoveHandler)
+        mouseMoveHandler(*event);
+}
+void DelegatingWidget::leaveEvent(QEvent *event)
+{
+    if(mouseLeaveHandler)
+        mouseLeaveHandler(*event);
+}
