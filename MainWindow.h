@@ -7,6 +7,7 @@
 #include <QPoint>
 #include <QPushButton>
 #include <vector>
+#include <functional>
 
 namespace Ui {
 class MainWindow;
@@ -22,15 +23,15 @@ public:
 private:
     static const int vertexSize=10;
     DelegatingWidget *designArea;
-    QPushButton *completeButton;
     std::vector<QPoint> polygon;
     bool completed;
+    std::vector<std::function<void()>> updaters;
     void drawPolygon(QPainter&);
     void handleMouseRelease(QMouseEvent&);
     void complete();
     void reset();
-    void handlePolygonUpdate();
     QLayout *createButtons();
+    void callAllUpdaters();
 };
 
 #endif // MAINWINDOW_H

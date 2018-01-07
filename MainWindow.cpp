@@ -12,11 +12,11 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     designArea(new DelegatingWidget(this)),
-    completeButton(nullptr),
     completed(false)
 {
     designArea->paintFunction=[&](QPainter &painter){drawPolygon(painter);};
     designArea->mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
+    updaters.push_back([&](){designArea->update();});
     auto mainLayout=new QHBoxLayout(this);
     mainLayout->addWidget(designArea,1);
     mainLayout->addLayout(createButtons());
@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     centralWidget->setLayout(mainLayout);
     setStatusBar(new QStatusBar(this));
     setCentralWidget(centralWidget);
-    handlePolygonUpdate();
+    callAllUpdaters();
 }
 void MainWindow::drawPolygon(QPainter &painter)
 {
@@ -48,40 +48,39 @@ void MainWindow::handleMouseRelease(QMouseEvent &event)
     if(event.button()==Qt::LeftButton)
     {
         polygon.push_back(event.pos());
-        handlePolygonUpdate();
+        callAllUpdaters();
     }
 }
 void MainWindow::complete()
 {
     completed=true;
-    designArea->update();
-    completeButton->setDisabled(true);
     const auto areaText="Area: "+std::to_string(CalculateArea(polygon));
     statusBar()->addWidget(new QLabel(QString(areaText.c_str()),this));
     const auto convexText=std::string(IsPolygonConvex(polygon)?"Convex":"Not convex");
     statusBar()->addWidget(new QLabel(QString(convexText.c_str()),this));
+    callAllUpdaters();
 }
 void MainWindow::reset()
 {
     setStatusBar(new QStatusBar());
     completed=false;
     polygon.clear();
-    handlePolygonUpdate();
-}
-void MainWindow::handlePolygonUpdate()
-{
-    completeButton->setDisabled(
-        polygon.size()<3
-        || HasPolygonSelfIntersections(polygon));
-    designArea->update();
+    callAllUpdaters();
 }
 QLayout *MainWindow::createButtons()
 {
     auto buttonLayout=new QVBoxLayout(this);
     {//add complete button
-        completeButton=new QPushButton("Complete",this);
+        auto completeButton=new QPushButton("Complete",this);
         buttonLayout->addWidget(completeButton);
         QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
+        updaters.push_back([&,completeButton]()
+        {
+            completeButton->setDisabled(
+                completed
+                || polygon.size()<3
+                || HasPolygonSelfIntersections(polygon));
+        });
     }
     {//add reset button
         auto resetButton=new QPushButton("Reset",this);
@@ -90,4 +89,9 @@ QLayout *MainWindow::createButtons()
     }
     buttonLayout->addStretch(1);
     return buttonLayout;
+}
+void MainWindow::callAllUpdaters()
+{
+    for(const auto &updater:updaters)
+        updater();
 }
