@@ -1,5 +1,4 @@
 show area in the status bar
-    add function for calculating area of a polygon
     when completed show polygon area on the status bar
 make "complete" button active only when there are no self-intersections
 show convexness in the status bar
