@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "CalculateArea.h"
 #include "HasPolygonSelfIntersections.h"
+#include "IsPolygonConvex.h"
 #include <QBrush>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -56,8 +57,10 @@ void MainWindow::complete()
     completed=true;
     designArea->update();
     completeButton->setDisabled(true);
-    const auto text="Area: "+std::to_string(CalculateArea(polygon));
-    statusBar()->addWidget(new QLabel(QString(text.c_str()),this));
+    const auto areaText="Area: "+std::to_string(CalculateArea(polygon));
+    statusBar()->addWidget(new QLabel(QString(areaText.c_str()),this));
+    const auto convexText=std::string(IsPolygonConvex(polygon)?"Convex":"Not convex");
+    statusBar()->addWidget(new QLabel(QString(convexText.c_str()),this));
 }
 void MainWindow::updateCompleteButton()
 {
