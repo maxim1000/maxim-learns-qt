@@ -28,7 +28,7 @@ private:
     void handleMouseRelease(QMouseEvent&);
     void complete();
     void reset();
-    void updateCompleteButton();
+    void handlePolygonUpdate();
 };
 
 #endif // MAINWINDOW_H

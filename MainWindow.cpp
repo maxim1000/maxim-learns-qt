@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
     QObject::connect(resetButton,&QPushButton::clicked,[&](){reset();});
     mainLayout->addLayout(buttonLayout);
-    updateCompleteButton();
+    handlePolygonUpdate();
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(mainLayout);
     setStatusBar(new QStatusBar(this));
@@ -55,8 +55,7 @@ void MainWindow::handleMouseRelease(QMouseEvent &event)
     if(event.button()==Qt::LeftButton)
     {
         polygon.push_back(event.pos());
-        designArea->update();
-        updateCompleteButton();
+        handlePolygonUpdate();
     }
 }
 void MainWindow::complete()
@@ -72,10 +71,14 @@ void MainWindow::complete()
 void MainWindow::reset()
 {
     setStatusBar(new QStatusBar());
+    completed=false;
+    polygon.clear();
+    handlePolygonUpdate();
 }
-void MainWindow::updateCompleteButton()
+void MainWindow::handlePolygonUpdate()
 {
     completeButton->setDisabled(
         polygon.size()<3
         || HasPolygonSelfIntersections(polygon));
+    designArea->update();
 }
