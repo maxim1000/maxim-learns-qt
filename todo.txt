@@ -1,5 +1,4 @@
 show convexness in the status bar
-    add function for checking if a polygon is convex
     add convexness information to the status bar when the polygon is completed
 add "reset" button
 show mouse coordinates in the status bar (until completion)

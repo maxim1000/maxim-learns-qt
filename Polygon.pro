@@ -28,13 +28,18 @@ SOURCES += \
     MainWindow.cpp \
     DelegatingWidget.cpp \
     CalculateArea.cpp \
-    HasPolygonSelfIntersections.cpp
+    HasPolygonSelfIntersections.cpp \
+    GetLineSide.cpp \
+    IsPolygonConvex.cpp
 
 HEADERS += \
     MainWindow.h \
     DelegatingWidget.h \
     Polygon.h \
     CalculateArea.h \
-    HasPolygonSelfIntersections.h
+    HasPolygonSelfIntersections.h \
+    GetLineSide.h \
+    IsPolygonConvex.h \
+    Line.h
 
 FORMS +=
