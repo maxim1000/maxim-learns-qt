@@ -4,6 +4,7 @@
 #include "DelegatingWidget.h"
 #include <QMainWindow>
 #include <QPoint>
+#include <QPushButton>
 #include <vector>
 
 namespace Ui {
@@ -19,8 +20,9 @@ public:
 
 private:
     static const int vertexSize=10;
-    std::vector<QPoint> polygon;
     DelegatingWidget *designArea;
+    QPushButton *completeButton;
+    std::vector<QPoint> polygon;
     bool completed;
     void drawPolygon(QPainter&);
     void handleMouseRelease(QMouseEvent&);

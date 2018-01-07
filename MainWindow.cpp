@@ -3,17 +3,16 @@
 #include <QHBoxLayout>
 #include <QMouseEvent>
 #include <QPainter>
-#include <QPushButton>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     designArea(new DelegatingWidget(this)),
+    completeButton(new QPushButton("Complete",this)),
     completed(false)
 {
     designArea->paintFunction=[&](QPainter &painter){drawPolygon(painter);};
     designArea->mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
     auto layout=new QHBoxLayout(this);
     layout->addWidget(designArea,1);
-    auto completeButton=new QPushButton("Complete");
     QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
     layout->addWidget(completeButton);
     auto centralWidget=new QWidget(this);
@@ -47,4 +46,5 @@ void MainWindow::complete()
 {
     completed=true;
     designArea->update();
+    completeButton->setDisabled(true);
 }

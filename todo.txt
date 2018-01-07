@@ -1,5 +1,4 @@
 add "complete" button - closes the polygon
-    disable the button when the polygon is already closed
     align button to the top
 show area in the status bar
 make "complete" button active only when there are no self-intersections
