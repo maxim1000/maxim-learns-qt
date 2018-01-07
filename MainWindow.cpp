@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QStatusBar>
+#include <QVBoxLayout>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     designArea(new DelegatingWidget(this)),
@@ -16,13 +17,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     designArea->paintFunction=[&](QPainter &painter){drawPolygon(painter);};
     designArea->mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
-    auto layout=new QHBoxLayout(this);
-    layout->addWidget(designArea,1);
+    auto buttonLayout=new QVBoxLayout(this);
+    buttonLayout->addWidget(completeButton);
+    buttonLayout->addWidget(new QPushButton("Reset",this));
+    buttonLayout->addStretch(1);
+    auto mainLayout=new QHBoxLayout(this);
+    mainLayout->addWidget(designArea,1);
     QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
-    layout->addWidget(completeButton,0,Qt::AlignTop);
+    mainLayout->addLayout(buttonLayout);
     updateCompleteButton();
     auto centralWidget=new QWidget(this);
-    centralWidget->setLayout(layout);
+    centralWidget->setLayout(mainLayout);
     setStatusBar(new QStatusBar(this));
     setCentralWidget(centralWidget);
 }
