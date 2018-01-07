@@ -25,12 +25,11 @@ private:
     std::vector<QPoint> polygon;
     bool completed;
     std::vector<std::function<void()>> updaters;
-    void drawPolygon(QPainter&,const QRect&);
-    void handleMouseRelease(QMouseEvent&);
-    void complete();
-    void reset();
-    QLayout *createButtons();
     void callAllUpdaters();
+    QWidget *createDesignArea();
+    QLayout *createButtons();
+    QWidget *createCompleteButton();
+    QWidget *createResetButton();
 };
 
 #endif // MAINWINDOW_H
