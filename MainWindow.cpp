@@ -1,6 +1,8 @@
 #include "MainWindow.h"
+#include "CalculateArea.h"
 #include <QBrush>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QStatusBar>
@@ -51,4 +53,6 @@ void MainWindow::complete()
     completed=true;
     designArea->update();
     completeButton->setDisabled(true);
+    const auto text="Area: "+std::to_string(CalculateArea(polygon));
+    statusBar()->addWidget(new QLabel(QString(text.c_str()),this));
 }
