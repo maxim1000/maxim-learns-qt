@@ -15,7 +15,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     auto mainLayout=new QHBoxLayout(this);
     mainLayout->addWidget(createDesignArea(),1);
-    mainLayout->addLayout(createButtons());
+    {//add buttons
+        auto buttonLayout=new QVBoxLayout(this);
+        buttonLayout->addWidget(createCompleteButton());
+        buttonLayout->addWidget(createResetButton());
+        buttonLayout->addStretch(1);
+        mainLayout->addLayout(buttonLayout);
+    }
     setStatusBar(new QStatusBar(this));
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(mainLayout);
@@ -55,14 +61,6 @@ QWidget *MainWindow::createDesignArea()
     };
     updaters.push_back([designArea](){designArea->update();});
     return designArea;
-}
-QLayout *MainWindow::createButtons()
-{
-    auto buttonLayout=new QVBoxLayout(this);
-    buttonLayout->addWidget(createCompleteButton());
-    buttonLayout->addWidget(createResetButton());
-    buttonLayout->addStretch(1);
-    return buttonLayout;
 }
 QWidget *MainWindow::createCompleteButton()
 {

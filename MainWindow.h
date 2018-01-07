@@ -27,7 +27,6 @@ private:
     std::vector<std::function<void()>> updaters;
     void callAllUpdaters();
     QWidget *createDesignArea();
-    QLayout *createButtons();
     QWidget *createCompleteButton();
     QWidget *createResetButton();
 };
