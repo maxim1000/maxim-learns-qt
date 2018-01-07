@@ -11,7 +11,8 @@
 #include <QVBoxLayout>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    completed(false)
+    completed(false),
+    candidateCordinates(-1,-1)
 {
     auto mainLayout=new QHBoxLayout(this);
     mainLayout->addWidget(createDesignArea(),1);
@@ -22,9 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
         buttonLayout->addStretch(1);
         mainLayout->addLayout(buttonLayout);
     }
-    setStatusBar(new QStatusBar(this));
-    statusBar()->addWidget(createAreaLabel());
-    statusBar()->addWidget(createConvexLabel());
+    {//add status bar
+        auto bar=new QStatusBar(this);
+        bar->addWidget(createAreaLabel());
+        bar->addWidget(createConvexLabel());
+        bar->addWidget(createCoordinatesLabel());
+        setStatusBar(bar);
+    }
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);
@@ -58,6 +63,15 @@ QWidget *MainWindow::createDesignArea()
         if(!completed && event.button()==Qt::LeftButton)
         {
             polygon.push_back(event.pos());
+            callAllUpdaters();
+        }
+    };
+    designArea->setMouseTracking(true);
+    designArea->mouseMoveHandler=[&](QMouseEvent &event)
+    {
+        if(!completed)
+        {
+            candidateCordinates=event.pos();
             callAllUpdaters();
         }
     };
@@ -117,6 +131,23 @@ QWidget *MainWindow::createConvexLabel()
         {
             const auto convexText=std::string(IsPolygonConvex(polygon)?"Convex":"Not convex");
             label->setText(QString(convexText.c_str()));
+            label->show();
+        }
+        else
+            label->hide();
+    });
+    return label;
+}
+QWidget *MainWindow::createCoordinatesLabel()
+{
+    auto label=new QLabel(this);
+    updaters.push_back([&,label]()
+    {
+        if(!completed && candidateCordinates!=QPoint(-1,-1))
+        {
+            const auto text=
+                std::to_string(candidateCordinates.x())+", "+std::to_string(candidateCordinates.y());
+            label->setText(QString(text.c_str()));
             label->show();
         }
         else

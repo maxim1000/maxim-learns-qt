@@ -24,6 +24,7 @@ private:
     static const int vertexSize=10;
     std::vector<QPoint> polygon;
     bool completed;
+    QPoint candidateCordinates;
     std::vector<std::function<void()>> updaters;
     void callAllUpdaters();
     QWidget *createDesignArea();
@@ -31,6 +32,7 @@ private:
     QWidget *createResetButton();
     QWidget *createAreaLabel();
     QWidget *createConvexLabel();
+    QWidget *createCoordinatesLabel();
 };
 
 #endif // MAINWINDOW_H
