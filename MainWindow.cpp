@@ -45,7 +45,7 @@ QWidget *MainWindow::createDesignArea()
     auto designArea=new DelegatingWidget(this);
     designArea->paintFunction=[&,designArea](QPainter &painter)
     {
-        painter.setBrush(QBrush(QColor(255,255,255)));
+        painter.setBrush(QBrush(Qt::white));
         painter.drawRect(designArea->rect());
         if(polygon.size()>1)
         {
@@ -54,7 +54,17 @@ QWidget *MainWindow::createDesignArea()
             if(completed)
                 painter.drawLine(polygon.front(),polygon.back());
         }
-        painter.setBrush(QBrush(QColor(0,0,0)));
+        if(!completed && polygon.size()>=1 && candidateCordinates!=QPoint(-1,-1))
+        {
+            QPen pen;
+            pen.setColor(Qt::green);
+            pen.setStyle(Qt::DashLine);
+            painter.setPen(pen);
+            painter.drawLine(polygon.front(),candidateCordinates);
+            painter.drawLine(polygon.back(),candidateCordinates);
+        }
+        painter.setPen(Qt::SolidLine);
+        painter.setBrush(QBrush(Qt::black));
         for(const auto &point:polygon)
             painter.drawEllipse(point,vertexSize,vertexSize);
     };
