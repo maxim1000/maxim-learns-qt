@@ -39,7 +39,6 @@ HEADERS += \
     CalculateArea.h \
     HasPolygonSelfIntersections.h \
     GetLineSide.h \
-    IsPolygonConvex.h \
-    Line.h
+    IsPolygonConvex.h
 
 FORMS +=

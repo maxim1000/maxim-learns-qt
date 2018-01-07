@@ -13,7 +13,7 @@ bool IsPolygonConvex(const Polygon &polygon)
         auto point3=point2+1;
         if(point3==polygon.end())
             point3=polygon.begin();
-        signs.push_back(GetLineSide(*point3,Line(*point1,*point2)));
+        signs.push_back(GetLineSide(*point3,QLine(*point1,*point2)));
     }
     const bool negative=(std::find(signs.begin(),signs.end(),-1)!=signs.end());
     const bool positive=(std::find(signs.begin(),signs.end(),1)!=signs.end());

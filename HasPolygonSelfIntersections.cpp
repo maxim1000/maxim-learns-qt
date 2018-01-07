@@ -3,17 +3,17 @@
 namespace
 {
 	using Segment=std::pair<QPoint,QPoint>;
-	bool DoesSegmentIntersectLine(const Segment &segment,const Line &line)
+    bool DoesSegmentIntersectLine(const Segment &segment,const QLine &line)
 	{
-		const auto side1=GetLineSide(segment.first,line);
-		const auto side2=GetLineSide(segment.second,line);
+        const auto side1=GetLineSide(segment.first,line);
+        const auto side2=GetLineSide(segment.second,line);
 		return side1*side2<=0;
 	}
 	bool DoSegmentsIntersect(const Segment &segment1,const Segment &segment2)
 	{
 		return
-			DoesSegmentIntersectLine(segment1,Line(segment2))
-			&& DoesSegmentIntersectLine(segment2,Line(segment1));
+            DoesSegmentIntersectLine(segment1,QLine(segment2.first,segment2.second))
+            && DoesSegmentIntersectLine(segment2,QLine(segment1.first,segment1.second));
 	}
 }
 bool HasPolygonSelfIntersections(const Polygon &polygon)
