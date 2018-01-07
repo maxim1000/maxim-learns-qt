@@ -1,4 +1,3 @@
-make "complete" button active only when there are no self-intersections
 show convexness in the status bar
 add "reset" button
 show mouse coordinates in the status bar (until completion)
