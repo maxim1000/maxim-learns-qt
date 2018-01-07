@@ -1,5 +1,6 @@
 add "reset" button
     clear polygon on reset
+    reduce complexity of MainWindow constructor
 show mouse coordinates in the status bar (until completion)
 change mouse cursor to cross
 draw dashed green line between candidate and the last and the first vertices
