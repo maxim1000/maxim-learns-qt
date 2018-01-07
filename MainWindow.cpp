@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QStatusBar>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     designArea(new DelegatingWidget(this)),
@@ -17,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     layout->addWidget(completeButton,0,Qt::AlignTop);
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(layout);
+    setStatusBar(new QStatusBar(this));
     setCentralWidget(centralWidget);
 }
 void MainWindow::drawPolygon(QPainter &painter)
