@@ -27,12 +27,14 @@ SOURCES += \
         main.cpp \
     MainWindow.cpp \
     DelegatingWidget.cpp \
-    CalculateArea.cpp
+    CalculateArea.cpp \
+    HasPolygonSelfIntersections.cpp
 
 HEADERS += \
     MainWindow.h \
     DelegatingWidget.h \
     Polygon.h \
-    CalculateArea.h
+    CalculateArea.h \
+    HasPolygonSelfIntersections.h
 
 FORMS +=

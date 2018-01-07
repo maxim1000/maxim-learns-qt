@@ -1,5 +1,4 @@
 make "complete" button active only when there are no self-intersections
-    add function checking for self-intersections
     control the button enabledness based on self-intersections presence
 show convexness in the status bar
 add "reset" button
