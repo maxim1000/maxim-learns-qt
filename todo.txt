@@ -1,4 +1,7 @@
 add "reset" button
+    add the button
+    clear status bar on reset
+    clear polygon on reset
 show mouse coordinates in the status bar (until completion)
 change mouse cursor to cross
 draw dashed green line between candidate and the last and the first vertices
