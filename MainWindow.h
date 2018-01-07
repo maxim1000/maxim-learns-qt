@@ -21,8 +21,10 @@ private:
     static const int vertexSize=10;
     std::vector<QPoint> polygon;
     DelegatingWidget *designArea;
+    bool completed;
     void drawPolygon(QPainter&);
     void handleMouseRelease(QMouseEvent&);
+    void complete();
 };
 
 #endif // MAINWINDOW_H
