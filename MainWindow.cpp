@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
         mainLayout->addLayout(buttonLayout);
     }
     setStatusBar(new QStatusBar(this));
+    statusBar()->addWidget(createAreaLabel());
+    statusBar()->addWidget(createConvexLabel());
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);
@@ -68,10 +70,6 @@ QWidget *MainWindow::createCompleteButton()
     QObject::connect(completeButton,&QPushButton::clicked,[&]()
     {
         completed=true;
-        const auto areaText="Area: "+std::to_string(CalculateArea(polygon));
-        statusBar()->addWidget(new QLabel(QString(areaText.c_str()),this));
-        const auto convexText=std::string(IsPolygonConvex(polygon)?"Convex":"Not convex");
-        statusBar()->addWidget(new QLabel(QString(convexText.c_str()),this));
         callAllUpdaters();
     });
     updaters.push_back([&,completeButton]()
@@ -88,10 +86,41 @@ QWidget *MainWindow::createResetButton()
     auto resetButton=new QPushButton("Reset",this);
     QObject::connect(resetButton,&QPushButton::clicked,[&]()
     {
-        setStatusBar(new QStatusBar());
         completed=false;
         polygon.clear();
         callAllUpdaters();
     });
     return resetButton;
+}
+QWidget *MainWindow::createAreaLabel()
+{
+    auto label=new QLabel(this);
+    updaters.push_back([&,label]()
+    {
+        if(completed)
+        {
+            const auto areaText="Area: "+std::to_string(CalculateArea(polygon));
+            label->setText(QString(areaText.c_str()));
+            label->show();
+        }
+        else
+            label->hide();
+    });
+    return label;
+}
+QWidget *MainWindow::createConvexLabel()
+{
+    auto label=new QLabel(this);
+    updaters.push_back([&,label]()
+    {
+        if(completed)
+        {
+            const auto convexText=std::string(IsPolygonConvex(polygon)?"Convex":"Not convex");
+            label->setText(QString(convexText.c_str()));
+            label->show();
+        }
+        else
+            label->hide();
+    });
+    return label;
 }

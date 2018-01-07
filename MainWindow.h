@@ -29,6 +29,8 @@ private:
     QWidget *createDesignArea();
     QWidget *createCompleteButton();
     QWidget *createResetButton();
+    QWidget *createAreaLabel();
+    QWidget *createConvexLabel();
 };
 
 #endif // MAINWINDOW_H
