@@ -1,3 +1,4 @@
+fill polygon with green color after completion
 make a better frame for the design area
 make a more convenient window size at the start
 avoid polygon reallocating on every mouse move
