@@ -53,23 +53,34 @@ QWidget *MainWindow::createDesignArea()
             if(completed)
                 painter.drawLine(polygon.front(),polygon.back());
         }
-        if(!completed && polygon.size()>=1 && candidateCordinates!=QPoint(-1,-1))
+        if(!completed && polygon.size()>=1)
         {
-            auto candidatePolygon=polygon;
-            candidatePolygon.push_back(candidateCordinates);
-            QPen pen;
-            auto color=Qt::black;
-            if(candidatePolygon.size()>2)
-                color=(HasPolygonSelfIntersections(candidatePolygon)?Qt::red:Qt::green);
-            pen.setColor(color);
-            pen.setStyle(Qt::DashLine);
-            painter.setPen(pen);
-            painter.drawLine(polygon.front(),candidateCordinates);
-            if(polygon.size()>1)
+            if(candidateCordinates!=QPoint(-1,-1))
             {
-                pen.setStyle(Qt::SolidLine);
+                auto candidatePolygon=polygon;
+                candidatePolygon.push_back(candidateCordinates);
+                QPen pen;
+                auto color=Qt::black;
+                if(candidatePolygon.size()>2)
+                    color=(HasPolygonSelfIntersections(candidatePolygon)?Qt::red:Qt::green);
+                pen.setColor(color);
+                pen.setStyle(Qt::DashLine);
                 painter.setPen(pen);
-                painter.drawLine(polygon.back(),candidateCordinates);
+                painter.drawLine(polygon.front(),candidateCordinates);
+                if(polygon.size()>1)
+                {
+                    pen.setStyle(Qt::SolidLine);
+                    painter.setPen(pen);
+                    painter.drawLine(polygon.back(),candidateCordinates);
+                }
+            }
+            else if(polygon.size()>=3)
+            {
+                QPen pen;
+                pen.setColor(HasPolygonSelfIntersections(polygon)?Qt::red:Qt::green);
+                pen.setStyle(Qt::DashLine);
+                painter.setPen(pen);
+                painter.drawLine(polygon.front(),polygon.back());
             }
         }
         painter.setPen(Qt::SolidLine);
