@@ -1,4 +1,3 @@
-add "complete" button - closes the polygon
 show area in the status bar
 make "complete" button active only when there are no self-intersections
 show convexness in the status bar
