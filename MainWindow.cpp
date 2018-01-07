@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     auto layout=new QHBoxLayout(this);
     layout->addWidget(designArea,1);
     QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
-    layout->addWidget(completeButton);
+    layout->addWidget(completeButton,0,Qt::AlignTop);
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
