@@ -8,63 +8,90 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QStatusBar>
+#include <QVBoxLayout>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    designArea(new DelegatingWidget(this)),
-    completeButton(new QPushButton("Complete",this)),
     completed(false)
 {
-    designArea->paintFunction=[&](QPainter &painter){drawPolygon(painter);};
-    designArea->mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
-    auto layout=new QHBoxLayout(this);
-    layout->addWidget(designArea,1);
-    QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
-    layout->addWidget(completeButton,0,Qt::AlignTop);
-    updateCompleteButton();
-    auto centralWidget=new QWidget(this);
-    centralWidget->setLayout(layout);
+    auto mainLayout=new QHBoxLayout(this);
+    mainLayout->addWidget(createDesignArea(),1);
+    {//add buttons
+        auto buttonLayout=new QVBoxLayout(this);
+        buttonLayout->addWidget(createCompleteButton());
+        buttonLayout->addWidget(createResetButton());
+        buttonLayout->addStretch(1);
+        mainLayout->addLayout(buttonLayout);
+    }
     setStatusBar(new QStatusBar(this));
+    auto centralWidget=new QWidget(this);
+    centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);
+    callAllUpdaters();
 }
-void MainWindow::drawPolygon(QPainter &painter)
+void MainWindow::callAllUpdaters()
 {
-    painter.setBrush(QBrush(QColor(255,255,255)));
-    painter.drawRect(designArea->rect());
-    if(polygon.size()>1)
+    for(const auto &updater:updaters)
+        updater();
+}
+QWidget *MainWindow::createDesignArea()
+{
+    auto designArea=new DelegatingWidget(this);
+    designArea->paintFunction=[&,designArea](QPainter &painter)
     {
-        for(auto point=polygon.begin();point+1!=polygon.end();++point)
-            painter.drawLine(*point,*(point+1));
-        if(completed)
-            painter.drawLine(polygon.front(),polygon.back());
-    }
-    painter.setBrush(QBrush(QColor(0,0,0)));
-    for(const auto &point:polygon)
-        painter.drawEllipse(point,vertexSize,vertexSize);
-}
-void MainWindow::handleMouseRelease(QMouseEvent &event)
-{
-    if(completed)
-        return;
-    if(event.button()==Qt::LeftButton)
+        painter.setBrush(QBrush(QColor(255,255,255)));
+        painter.drawRect(designArea->rect());
+        if(polygon.size()>1)
+        {
+            for(auto point=polygon.begin();point+1!=polygon.end();++point)
+                painter.drawLine(*point,*(point+1));
+            if(completed)
+                painter.drawLine(polygon.front(),polygon.back());
+        }
+        painter.setBrush(QBrush(QColor(0,0,0)));
+        for(const auto &point:polygon)
+            painter.drawEllipse(point,vertexSize,vertexSize);
+    };
+    designArea->mouseReleaseHandler=[&](QMouseEvent &event)
     {
-        polygon.push_back(event.pos());
-        designArea->update();
-        updateCompleteButton();
-    }
+        if(!completed && event.button()==Qt::LeftButton)
+        {
+            polygon.push_back(event.pos());
+            callAllUpdaters();
+        }
+    };
+    updaters.push_back([designArea](){designArea->update();});
+    return designArea;
 }
-void MainWindow::complete()
+QWidget *MainWindow::createCompleteButton()
 {
-    completed=true;
-    designArea->update();
-    completeButton->setDisabled(true);
-    const auto areaText="Area: "+std::to_string(CalculateArea(polygon));
-    statusBar()->addWidget(new QLabel(QString(areaText.c_str()),this));
-    const auto convexText=std::string(IsPolygonConvex(polygon)?"Convex":"Not convex");
-    statusBar()->addWidget(new QLabel(QString(convexText.c_str()),this));
+    auto completeButton=new QPushButton("Complete",this);
+    QObject::connect(completeButton,&QPushButton::clicked,[&]()
+    {
+        completed=true;
+        const auto areaText="Area: "+std::to_string(CalculateArea(polygon));
+        statusBar()->addWidget(new QLabel(QString(areaText.c_str()),this));
+        const auto convexText=std::string(IsPolygonConvex(polygon)?"Convex":"Not convex");
+        statusBar()->addWidget(new QLabel(QString(convexText.c_str()),this));
+        callAllUpdaters();
+    });
+    updaters.push_back([&,completeButton]()
+    {
+        completeButton->setDisabled(
+            completed
+            || polygon.size()<3
+            || HasPolygonSelfIntersections(polygon));
+    });
+    return completeButton;
 }
-void MainWindow::updateCompleteButton()
+QWidget *MainWindow::createResetButton()
 {
-    completeButton->setDisabled(
-        polygon.size()<3
-        || HasPolygonSelfIntersections(polygon));
+    auto resetButton=new QPushButton("Reset",this);
+    QObject::connect(resetButton,&QPushButton::clicked,[&]()
+    {
+        setStatusBar(new QStatusBar());
+        completed=false;
+        polygon.clear();
+        callAllUpdaters();
+    });
+    return resetButton;
 }
