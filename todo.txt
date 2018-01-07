@@ -1,5 +1,4 @@
 add "reset" button
-    clear status bar on reset
     clear polygon on reset
 show mouse coordinates in the status bar (until completion)
 change mouse cursor to cross

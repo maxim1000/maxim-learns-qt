@@ -27,6 +27,7 @@ private:
     void drawPolygon(QPainter&);
     void handleMouseRelease(QMouseEvent&);
     void complete();
+    void reset();
     void updateCompleteButton();
 };
 

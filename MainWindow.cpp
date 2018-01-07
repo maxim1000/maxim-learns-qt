@@ -19,11 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
     designArea->mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
     auto buttonLayout=new QVBoxLayout(this);
     buttonLayout->addWidget(completeButton);
-    buttonLayout->addWidget(new QPushButton("Reset",this));
+    auto resetButton=new QPushButton("Reset",this);
+    buttonLayout->addWidget(resetButton);
     buttonLayout->addStretch(1);
     auto mainLayout=new QHBoxLayout(this);
     mainLayout->addWidget(designArea,1);
     QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
+    QObject::connect(resetButton,&QPushButton::clicked,[&](){reset();});
     mainLayout->addLayout(buttonLayout);
     updateCompleteButton();
     auto centralWidget=new QWidget(this);
@@ -66,6 +68,10 @@ void MainWindow::complete()
     statusBar()->addWidget(new QLabel(QString(areaText.c_str()),this));
     const auto convexText=std::string(IsPolygonConvex(polygon)?"Convex":"Not convex");
     statusBar()->addWidget(new QLabel(QString(convexText.c_str()),this));
+}
+void MainWindow::reset()
+{
+    setStatusBar(new QStatusBar());
 }
 void MainWindow::updateCompleteButton()
 {
