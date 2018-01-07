@@ -36,6 +36,8 @@ void MainWindow::drawPolygon(QPainter &painter)
 }
 void MainWindow::handleMouseRelease(QMouseEvent &event)
 {
+    if(completed)
+        return;
     if(event.button()==Qt::LeftButton)
     {
         polygon.push_back(event.pos());
