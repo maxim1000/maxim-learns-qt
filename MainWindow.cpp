@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPushButton>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     designArea(new DelegatingWidget(this))
@@ -11,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     designArea->mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
     auto layout=new QHBoxLayout(this);
     layout->addWidget(designArea,1);
+    layout->addWidget(new QPushButton("Complete"));
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
