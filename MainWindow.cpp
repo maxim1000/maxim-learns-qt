@@ -46,41 +46,48 @@ QWidget *MainWindow::createDesignArea()
     designArea->paintFunction=[&,designArea](QPainter &painter)
     {
         painter.fillRect(designArea->rect(),Qt::white);
-        if(polygon.size()>1)
+        if(completed)
         {
-            for(auto point=polygon.begin();point+1!=polygon.end();++point)
-                painter.drawLine(*point,*(point+1));
-            if(completed)
-                painter.drawLine(polygon.front(),polygon.back());
+            QPainterPath path(polygon.back());
+            for(const auto &point:polygon)
+                path.lineTo(point);
+            painter.setBrush(QBrush(Qt::green));
+            painter.setPen(Qt::SolidLine);
+            painter.drawPath(path);
         }
-        if(!completed && polygon.size()>=1)
+        else if(!polygon.empty())
         {
-            if(candidateCordinates!=QPoint(-1,-1))
+            QPainterPath path(polygon.front());
+            for(auto point=polygon.begin()+1;point!=polygon.end();++point)
+                path.lineTo(*point);
+            painter.setBrush(Qt::NoBrush);
+            painter.setPen(Qt::SolidLine);
+            painter.drawPath(path);
+            if(candidateCordinates==QPoint(-1,-1))
+            {
+                if(polygon.size()>1)
+                {
+                    QPen pen(Qt::DashLine);
+                    pen.setColor(HasPolygonSelfIntersections(polygon)?Qt::red:Qt::green);
+                    painter.setPen(pen);
+                    painter.drawLine(polygon.front(),polygon.back());
+                }
+            }
+            else if(polygon.size()==1)
+            {
+                painter.setPen(Qt::DashLine);
+                painter.drawLine(polygon.back(),candidateCordinates);
+            }
+            else
             {
                 auto candidatePolygon=polygon;
                 candidatePolygon.push_back(candidateCordinates);
-                QPen pen;
-                auto color=Qt::black;
-                if(candidatePolygon.size()>2)
-                    color=(HasPolygonSelfIntersections(candidatePolygon)?Qt::red:Qt::green);
-                pen.setColor(color);
+                QPen pen(HasPolygonSelfIntersections(candidatePolygon)?Qt::red:Qt::green);
+                painter.setPen(pen);
+                painter.drawLine(polygon.back(),candidateCordinates);
                 pen.setStyle(Qt::DashLine);
                 painter.setPen(pen);
                 painter.drawLine(polygon.front(),candidateCordinates);
-                if(polygon.size()>1)
-                {
-                    pen.setStyle(Qt::SolidLine);
-                    painter.setPen(pen);
-                    painter.drawLine(polygon.back(),candidateCordinates);
-                }
-            }
-            else if(polygon.size()>=3)
-            {
-                QPen pen;
-                pen.setColor(HasPolygonSelfIntersections(polygon)?Qt::red:Qt::green);
-                pen.setStyle(Qt::DashLine);
-                painter.setPen(pen);
-                painter.drawLine(polygon.front(),polygon.back());
             }
         }
         painter.setPen(Qt::SolidLine);
