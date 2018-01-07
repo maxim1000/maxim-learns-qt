@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     layout->addWidget(designArea,1);
     QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
     layout->addWidget(completeButton,0,Qt::AlignTop);
+    updateCompleteButton();
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(layout);
     setStatusBar(new QStatusBar(this));
@@ -47,7 +48,7 @@ void MainWindow::handleMouseRelease(QMouseEvent &event)
     {
         polygon.push_back(event.pos());
         designArea->update();
-        completeButton->setDisabled(HasPolygonSelfIntersections(polygon));
+        updateCompleteButton();
     }
 }
 void MainWindow::complete()
@@ -57,4 +58,10 @@ void MainWindow::complete()
     completeButton->setDisabled(true);
     const auto text="Area: "+std::to_string(CalculateArea(polygon));
     statusBar()->addWidget(new QLabel(QString(text.c_str()),this));
+}
+void MainWindow::updateCompleteButton()
+{
+    completeButton->setDisabled(
+        polygon.size()<3
+        || HasPolygonSelfIntersections(polygon));
 }

@@ -1,5 +1,4 @@
 make "complete" button active only when there are no self-intersections
-    do not allow polygons of less than 3 vertices
 show convexness in the status bar
 add "reset" button
 show mouse coordinates in the status bar (until completion)
