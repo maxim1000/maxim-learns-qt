@@ -1,5 +1,4 @@
 show mouse coordinates in the status bar (until completion)
-    DelegatingWidget: add mouse move delegate
     show coordinates in the status bar when mouse moves
 change mouse cursor to cross
 draw dashed green line between candidate and the last and the first vertices
