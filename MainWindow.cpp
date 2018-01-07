@@ -12,26 +12,19 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     designArea(new DelegatingWidget(this)),
-    completeButton(new QPushButton("Complete",this)),
+    completeButton(nullptr),
     completed(false)
 {
     designArea->paintFunction=[&](QPainter &painter){drawPolygon(painter);};
     designArea->mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
-    auto buttonLayout=new QVBoxLayout(this);
-    buttonLayout->addWidget(completeButton);
-    auto resetButton=new QPushButton("Reset",this);
-    buttonLayout->addWidget(resetButton);
-    buttonLayout->addStretch(1);
     auto mainLayout=new QHBoxLayout(this);
     mainLayout->addWidget(designArea,1);
-    QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
-    QObject::connect(resetButton,&QPushButton::clicked,[&](){reset();});
-    mainLayout->addLayout(buttonLayout);
-    handlePolygonUpdate();
+    mainLayout->addLayout(createButtons());
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(mainLayout);
     setStatusBar(new QStatusBar(this));
     setCentralWidget(centralWidget);
+    handlePolygonUpdate();
 }
 void MainWindow::drawPolygon(QPainter &painter)
 {
@@ -81,4 +74,20 @@ void MainWindow::handlePolygonUpdate()
         polygon.size()<3
         || HasPolygonSelfIntersections(polygon));
     designArea->update();
+}
+QLayout *MainWindow::createButtons()
+{
+    auto buttonLayout=new QVBoxLayout(this);
+    {//add complete button
+        completeButton=new QPushButton("Complete",this);
+        buttonLayout->addWidget(completeButton);
+        QObject::connect(completeButton,&QPushButton::clicked,[&](){complete();});
+    }
+    {//add reset button
+        auto resetButton=new QPushButton("Reset",this);
+        buttonLayout->addWidget(resetButton);
+        QObject::connect(resetButton,&QPushButton::clicked,[&](){reset();});
+    }
+    buttonLayout->addStretch(1);
+    return buttonLayout;
 }

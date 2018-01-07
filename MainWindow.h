@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "DelegatingWidget.h"
+#include <QLayout>
 #include <QMainWindow>
 #include <QPoint>
 #include <QPushButton>
@@ -29,6 +30,7 @@ private:
     void complete();
     void reset();
     void handlePolygonUpdate();
+    QLayout *createButtons();
 };
 
 #endif // MAINWINDOW_H
