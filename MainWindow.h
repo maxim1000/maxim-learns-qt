@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "DelegatingWidget.h"
+#include "Polygon.h"
 #include <QLayout>
 #include <QMainWindow>
 #include <QPoint>
@@ -33,6 +34,13 @@ private:
     QWidget *createAreaLabel();
     QWidget *createConvexLabel();
     QWidget *createCoordinatesLabel();
+    static void drawClosedPolygon(QPainter&,const Polygon&);
+    static void drawOpenChain(QPainter&,const std::vector<QPoint>&);
+    static void drawCandidateConnectionLines(
+        QPainter&,
+        const std::vector<QPoint>&,
+        const QPoint &candidateCoordinates);
+    static void drawVertices(QPainter&,const std::vector<QPoint>&);
 };
 
 #endif // MAINWINDOW_H

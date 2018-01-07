@@ -47,53 +47,13 @@ QWidget *MainWindow::createDesignArea()
     {
         painter.fillRect(designArea->rect(),Qt::white);
         if(completed)
-        {
-            QPainterPath path(polygon.back());
-            for(const auto &point:polygon)
-                path.lineTo(point);
-            painter.setBrush(QBrush(Qt::green));
-            painter.setPen(Qt::SolidLine);
-            painter.drawPath(path);
-        }
+            drawClosedPolygon(painter,polygon);
         else if(!polygon.empty())
         {
-            QPainterPath path(polygon.front());
-            for(auto point=polygon.begin()+1;point!=polygon.end();++point)
-                path.lineTo(*point);
-            painter.setBrush(Qt::NoBrush);
-            painter.setPen(Qt::SolidLine);
-            painter.drawPath(path);
-            if(candidateCordinates==QPoint(-1,-1))
-            {
-                if(polygon.size()>1)
-                {
-                    QPen pen(Qt::DashLine);
-                    pen.setColor(HasPolygonSelfIntersections(polygon)?Qt::red:Qt::green);
-                    painter.setPen(pen);
-                    painter.drawLine(polygon.front(),polygon.back());
-                }
-            }
-            else if(polygon.size()==1)
-            {
-                painter.setPen(Qt::DashLine);
-                painter.drawLine(polygon.back(),candidateCordinates);
-            }
-            else
-            {
-                auto candidatePolygon=polygon;
-                candidatePolygon.push_back(candidateCordinates);
-                QPen pen(HasPolygonSelfIntersections(candidatePolygon)?Qt::red:Qt::green);
-                painter.setPen(pen);
-                painter.drawLine(polygon.back(),candidateCordinates);
-                pen.setStyle(Qt::DashLine);
-                painter.setPen(pen);
-                painter.drawLine(polygon.front(),candidateCordinates);
-            }
+            drawOpenChain(painter,polygon);
+            drawCandidateConnectionLines(painter,polygon,candidateCordinates);
         }
-        painter.setPen(Qt::SolidLine);
-        painter.setBrush(QBrush(Qt::black));
-        for(const auto &point:polygon)
-            painter.drawEllipse(point,vertexSize,vertexSize);
+        drawVertices(painter,polygon);
     };
     designArea->mouseReleaseHandler=[&](QMouseEvent &event)
     {
@@ -200,4 +160,61 @@ QWidget *MainWindow::createCoordinatesLabel()
             label->hide();
     });
     return label;
+}
+void MainWindow::drawClosedPolygon(QPainter &painter,const Polygon &polygon)
+{
+    QPainterPath path(polygon.back());
+    for(const auto &point:polygon)
+        path.lineTo(point);
+    painter.setBrush(QBrush(Qt::green));
+    painter.setPen(Qt::SolidLine);
+    painter.drawPath(path);
+}
+void MainWindow::drawOpenChain(QPainter &painter,const std::vector<QPoint> &chain)
+{
+    QPainterPath path(chain.front());
+    for(auto point=chain.begin()+1;point!=chain.end();++point)
+        path.lineTo(*point);
+    painter.setBrush(Qt::NoBrush);
+    painter.setPen(Qt::SolidLine);
+    painter.drawPath(path);
+}
+void MainWindow::drawCandidateConnectionLines(
+    QPainter &painter,
+    const std::vector<QPoint> &points,
+    const QPoint &candidateCoordinates)
+{
+    if(candidateCoordinates==QPoint(-1,-1))
+    {
+        if(points.size()>1)
+        {
+            QPen pen(Qt::DashLine);
+            pen.setColor(HasPolygonSelfIntersections(points)?Qt::red:Qt::green);
+            painter.setPen(pen);
+            painter.drawLine(points.front(),points.back());
+        }
+    }
+    else if(points.size()==1)
+    {
+        painter.setPen(Qt::DashLine);
+        painter.drawLine(points.back(),candidateCoordinates);
+    }
+    else
+    {
+        auto candidatePolygon=points;
+        candidatePolygon.push_back(candidateCoordinates);
+        QPen pen(HasPolygonSelfIntersections(candidatePolygon)?Qt::red:Qt::green);
+        painter.setPen(pen);
+        painter.drawLine(points.back(),candidateCoordinates);
+        pen.setStyle(Qt::DashLine);
+        painter.setPen(pen);
+        painter.drawLine(points.front(),candidateCoordinates);
+    }
+}
+void MainWindow::drawVertices(QPainter &painter,const std::vector<QPoint> &points)
+{
+    painter.setPen(Qt::SolidLine);
+    painter.setBrush(QBrush(Qt::black));
+    for(const auto &point:points)
+        painter.drawEllipse(point,vertexSize,vertexSize);
 }
