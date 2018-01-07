@@ -26,10 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     MainWindow.cpp \
-    DelegatingWidget.cpp
+    DelegatingWidget.cpp \
+    CalculateArea.cpp
 
 HEADERS += \
     MainWindow.h \
-    DelegatingWidget.h
+    DelegatingWidget.h \
+    Polygon.h \
+    CalculateArea.h
 
 FORMS +=

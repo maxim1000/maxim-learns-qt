@@ -1,8 +1,11 @@
 #include "MainWindow.h"
+#include "CalculateArea.h"
 #include <QBrush>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QStatusBar>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     designArea(new DelegatingWidget(this)),
@@ -17,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     layout->addWidget(completeButton,0,Qt::AlignTop);
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(layout);
+    setStatusBar(new QStatusBar(this));
     setCentralWidget(centralWidget);
 }
 void MainWindow::drawPolygon(QPainter &painter)
@@ -49,4 +53,6 @@ void MainWindow::complete()
     completed=true;
     designArea->update();
     completeButton->setDisabled(true);
+    const auto text="Area: "+std::to_string(CalculateArea(polygon));
+    statusBar()->addWidget(new QLabel(QString(text.c_str()),this));
 }
