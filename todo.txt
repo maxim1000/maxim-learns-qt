@@ -1,5 +1,4 @@
 make "complete" button active only when there are no self-intersections
-    control the button enabledness based on self-intersections presence
     do not allow polygons of less than 3 vertices
 show convexness in the status bar
 add "reset" button

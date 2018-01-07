@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "CalculateArea.h"
+#include "HasPolygonSelfIntersections.h"
 #include <QBrush>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -46,6 +47,7 @@ void MainWindow::handleMouseRelease(QMouseEvent &event)
     {
         polygon.push_back(event.pos());
         designArea->update();
+        completeButton->setDisabled(HasPolygonSelfIntersections(polygon));
     }
 }
 void MainWindow::complete()
