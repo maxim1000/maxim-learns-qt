@@ -83,6 +83,7 @@ QWidget *MainWindow::createDesignArea()
             callAllUpdaters();
         }
     };
+    designArea->setCursor(Qt::CrossCursor);
     updaters.push_back([designArea](){designArea->update();});
     return designArea;
 }

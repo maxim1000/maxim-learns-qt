@@ -1,4 +1,3 @@
-change mouse cursor to cross
 draw dashed green line between candidate and the last and the first vertices
 make the dashed line red if there are self-intersections
 connect first and last when mouse is outside of the design area
