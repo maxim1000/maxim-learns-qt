@@ -75,6 +75,14 @@ QWidget *MainWindow::createDesignArea()
             callAllUpdaters();
         }
     };
+    designArea->mouseLeaveHandler=[&](QEvent&)
+    {
+        if(!completed)
+        {
+            candidateCordinates=QPoint(-1,-1);
+            callAllUpdaters();
+        }
+    };
     updaters.push_back([designArea](){designArea->update();});
     return designArea;
 }

@@ -1,5 +1,4 @@
 show mouse coordinates in the status bar (until completion)
-    do not show mouse coordinates when it's not over the design area
 change mouse cursor to cross
 draw dashed green line between candidate and the last and the first vertices
 make the dashed line red if there are self-intersections
