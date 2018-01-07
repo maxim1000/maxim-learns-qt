@@ -45,8 +45,7 @@ QWidget *MainWindow::createDesignArea()
     auto designArea=new DelegatingWidget(this);
     designArea->paintFunction=[&,designArea](QPainter &painter)
     {
-        painter.setBrush(QBrush(Qt::white));
-        painter.drawRect(designArea->rect());
+        painter.fillRect(designArea->rect(),Qt::white);
         if(polygon.size()>1)
         {
             for(auto point=polygon.begin();point+1!=polygon.end();++point)
