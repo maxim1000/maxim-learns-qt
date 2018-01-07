@@ -22,11 +22,10 @@ public:
 
 private:
     static const int vertexSize=10;
-    DelegatingWidget *designArea;
     std::vector<QPoint> polygon;
     bool completed;
     std::vector<std::function<void()>> updaters;
-    void drawPolygon(QPainter&);
+    void drawPolygon(QPainter&,const QRect&);
     void handleMouseRelease(QMouseEvent&);
     void complete();
     void reset();

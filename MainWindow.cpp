@@ -11,14 +11,16 @@
 #include <QVBoxLayout>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    designArea(new DelegatingWidget(this)),
     completed(false)
 {
-    designArea->paintFunction=[&](QPainter &painter){drawPolygon(painter);};
-    designArea->mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
-    updaters.push_back([&](){designArea->update();});
     auto mainLayout=new QHBoxLayout(this);
-    mainLayout->addWidget(designArea,1);
+    {//create design area
+        auto designArea=new DelegatingWidget(this);
+        designArea->paintFunction=[&,designArea](QPainter &painter){drawPolygon(painter,designArea->rect());};
+        designArea->mouseReleaseHandler=[&](QMouseEvent &event){handleMouseRelease(event);};
+        updaters.push_back([designArea](){designArea->update();});
+        mainLayout->addWidget(designArea,1);
+    }
     mainLayout->addLayout(createButtons());
     auto centralWidget=new QWidget(this);
     centralWidget->setLayout(mainLayout);
@@ -26,10 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
     setCentralWidget(centralWidget);
     callAllUpdaters();
 }
-void MainWindow::drawPolygon(QPainter &painter)
+void MainWindow::drawPolygon(QPainter &painter,const QRect &rect)
 {
     painter.setBrush(QBrush(QColor(255,255,255)));
-    painter.drawRect(designArea->rect());
+    painter.drawRect(rect);
     if(polygon.size()>1)
     {
         for(auto point=polygon.begin();point+1!=polygon.end();++point)
