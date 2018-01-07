@@ -1,5 +1,6 @@
 add "reset" button
     reduce complexity of MainWindow constructor
+    move updates closer to creation of the objects being updated
 show mouse coordinates in the status bar (until completion)
 change mouse cursor to cross
 draw dashed green line between candidate and the last and the first vertices
