@@ -1,4 +1,6 @@
-connect first and last when mouse is outside of the design area
+for second vertex: make the dashed line black
+for third and later vertices: make the line from the last vertex solid
+connect first and last when mouse is outside of the design area (color is the same as for other dashed lines)
 make a better frame for the design area
 make a more convenient window size at the start
 avoid polygon reallocating on every mouse move
