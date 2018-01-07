@@ -65,7 +65,12 @@ QWidget *MainWindow::createDesignArea()
             pen.setStyle(Qt::DashLine);
             painter.setPen(pen);
             painter.drawLine(polygon.front(),candidateCordinates);
-            painter.drawLine(polygon.back(),candidateCordinates);
+            if(polygon.size()>1)
+            {
+                pen.setStyle(Qt::SolidLine);
+                painter.setPen(pen);
+                painter.drawLine(polygon.back(),candidateCordinates);
+            }
         }
         painter.setPen(Qt::SolidLine);
         painter.setBrush(QBrush(Qt::black));
