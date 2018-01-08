@@ -27,6 +27,7 @@ private:
     bool completed;
     QPoint candidateCordinates;
     std::vector<std::function<void()>> updaters;
+    void setInitialSize();
     void callAllUpdaters();
     QWidget *createDesignArea();
     QWidget *createCompleteButton();

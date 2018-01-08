@@ -3,6 +3,7 @@
 #include "HasPolygonSelfIntersections.h"
 #include "IsPolygonConvex.h"
 #include <QBrush>
+#include <QDesktopWidget>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMouseEvent>
@@ -34,6 +35,12 @@ MainWindow::MainWindow(QWidget *parent) :
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);
     callAllUpdaters();
+    setInitialSize();
+}
+void MainWindow::setInitialSize()
+{
+    QDesktopWidget desktop;
+    resize(desktop.width()/2,desktop.height()/2);
 }
 void MainWindow::callAllUpdaters()
 {
